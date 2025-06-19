@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IAM Policy Generator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <header class="text-center py-4 mb-4 border-bottom">
+                    <h1 class="display-4 text-primary">IAM Policy Generator</h1>
+                    <p class="lead">Convert natural language to secure AWS IAM policies</p>
+                </header>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Input Section -->
+            <div class="col-lg-6">
+                <div class="card h-100">
+                    <div class="card-header">
+                        <h3 class="card-title mb-0">Describe Your Requirements</h3>
+                    </div>
+                    <div class="card-body">
+                        <form id="policyForm">
+                            <div class="mb-3">
+                                <label for="promptInput" class="form-label">Natural Language Prompt</label>
+                                <textarea 
+                                    class="form-control" 
+                                    id="promptInput" 
+                                    rows="6" 
+                                    placeholder="Example: Allow read-only access to S3 bucket 'customer-logs' but block deletion"
+                                    required
+                                ></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-lg w-100" id="generateBtn">
+                                <span class="spinner-border spinner-border-sm d-none" id="loadingSpinner"></span>
+                                Generate Policy
+                            </button>
+                        </form>
+
+                        <!-- Example Prompts -->
+                        <div class="mt-4">
+                            <h5>Example Prompts:</h5>
+                            <div class="list-group">
+                                <button type="button" class="list-group-item list-group-item-action example-prompt" 
+                                        data-prompt="Allow read-only access to S3 bucket 'customer-logs' but block deletion">
+                                    S3 read-only access with deletion protection
+                                </button>
+                                <button type="button" class="list-group-item list-group-item-action example-prompt" 
+                                        data-prompt="Allow EC2 instance management but only in us-east-1 region">
+                                    Regional EC2 management
+                                </button>
+                                <button type="button" class="list-group-item list-group-item-action example-prompt" 
+                                        data-prompt="Allow Lambda function creation and execution with CloudWatch logging">
+                                    Lambda with logging permissions
+                                </button>
+                                <button type="button" class="list-group-item list-group-item-action example-prompt" 
+                                        data-prompt="Allow RDS read access but deny database deletion">
+                                    RDS read-only with protection
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Output Section -->
+            <div class="col-lg-6">
+                <div class="card h-100">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h3 class="card-title mb-0">Generated Policy</h3>
+                        <div>
+                            <button class="btn btn-sm btn-outline-secondary" id="copyBtn" style="display: none;">
+                                Copy
+                            </button>
+                            <button class="btn btn-sm btn-outline-info" id="explainBtn" style="display: none;">
+                                Explain
+                            </button>
+                            <button class="btn btn-sm btn-outline-primary" id="newPolicyBtn" style="display: none;">
+                                New Policy
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div id="outputSection" class="d-none">
+                            <!-- Policy JSON -->
+                            <div class="mb-4">
+                                <h5>IAM Policy JSON:</h5>
+                                <pre><code class="language-json" id="policyOutput"></code></pre>
+                            </div>
+
+                            <!-- Risk Analysis -->
+                            <div id="riskAnalysis" class="mb-4">
+                                <h5>Security Analysis:</h5>
+                                <div id="riskContent"></div>
+                            </div>
+
+                            <!-- Policy Explanation -->
+                            <div id="explanationSection" class="d-none">
+                                <h5>Policy Explanation:</h5>
+                                <div id="explanationContent" class="alert alert-info"></div>
+                            </div>
+                        </div>
+
+                        <!-- Placeholder -->
+                        <div id="placeholder" class="text-center text-muted py-5">
+                            <div class="display-1">IAM</div>
+                            <p class="mt-3">Enter a natural language prompt to generate an IAM policy</p>
+                        </div>
+
+                        <!-- Error Display -->
+                        <div id="errorSection" class="alert alert-danger d-none">
+                            <h5>Error:</h5>
+                            <p id="errorMessage"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="text-center py-4 mt-5 border-top">
+            <p class="text-muted">
+                Always review generated policies before use in production. 
+                This tool uses AI and may not cover all security considerations.
+            </p>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
