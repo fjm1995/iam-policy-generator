@@ -240,12 +240,14 @@ class PolicyGenerator {
 
     setLoadingState(loading, buttonId = 'generateBtn') {
         const button = document.getElementById(buttonId);
-        const spinner = document.getElementById('loadingSpinner');
         
         if (loading) {
             button.disabled = true;
             if (buttonId === 'generateBtn') {
-                spinner.classList.remove('d-none');
+                const spinner = document.getElementById('loadingSpinner');
+                if (spinner) {
+                    spinner.classList.remove('d-none');
+                }
                 button.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Generating...';
             } else {
                 button.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Explaining...';
@@ -254,7 +256,10 @@ class PolicyGenerator {
         } else {
             button.disabled = false;
             if (buttonId === 'generateBtn') {
-                spinner.classList.add('d-none');
+                const spinner = document.getElementById('loadingSpinner');
+                if (spinner) {
+                    spinner.classList.add('d-none');
+                }
                 button.innerHTML = 'Generate Policy';
             } else {
                 button.innerHTML = 'Explain';

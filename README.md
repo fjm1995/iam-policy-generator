@@ -2,6 +2,8 @@
 
 A web-based tool that converts natural language descriptions into secure AWS IAM policies using OpenAI's GPT models. The application includes risk analysis and policy explanation features to help ensure security best practices.
 
+![IAM Policy Generator Screenshot](images/screenshot.png)
+
 ## Security Context and Purpose
 
 AWS Identity and Access Management (IAM) policies are critical security components that control access to cloud resources. However, creating secure IAM policies is challenging for several reasons:
